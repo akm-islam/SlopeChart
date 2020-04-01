@@ -13,7 +13,7 @@ class SlopeChart extends Component {
     var mydata3={"A":[],"B":[]}
     var original_data=this.props.data[this.props.year]
     var model_name=this.props.model_name
-    var start_range=1;
+    var start_range=0;
     var end_range=20;
     var all_models=this.props.models;
     var temp_array_for_max=[]
@@ -49,12 +49,12 @@ data["B"].forEach(function(d) {all_together.push(d);});
 var nestedByName = d3.nest().key(function(d) { return d.name }).entries(all_together);
 console.log(nestedByName)
 var y1Min = d3.min(nestedByName, function(d) {        
-  return 1; // This will start the right hand side range from 1
-  //return Math.min(d.values[0].rank, d.values[1].rank);
+  return 10; // set ymin greater than the min to make it grow negatively
+  return Math.min(d.values[0].rank, d.values[1].rank);
 });      
 var y1Max = d3.max(nestedByName, function(d) {        
-  //return 30; // This goes until the end
-  return Math.max(d.values[0].rank, d.values[1].rank);
+  return mymax - 10; // set the max less than the max so it will overgrow
+  //return Math.max(d.values[0].rank, d.values[1].rank);
 });
 //--------
     var margin = {top: 70, right: 70, bottom: 40, left: 150};
