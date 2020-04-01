@@ -13,8 +13,8 @@ class SlopeChart extends Component {
     var mydata3={"A":[],"B":[]}
     var original_data=this.props.data[this.props.year]
     var model_name=this.props.model_name
-    var start_range=0;
-    var end_range=20;
+    var start_range=23;
+    var end_range=50;
     var all_models=this.props.models;
     var temp_array_for_max=[]
     for(var i=0;i<all_models.length;i++){
@@ -41,23 +41,17 @@ var mymax=Math.max.apply(Math, temp_array_for_max) // This is to calculate the m
   }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------CreateSlopeChart function
-  CreateSlopeChart=(data,parent_width,mymax)=>{
-    const node = this.node
+CreateSlopeChart=(data,parent_width,mymax)=>{
+const node = this.node
 var all_together = [];
 data["A"].forEach(function(d) {all_together.push(d);});
 data["B"].forEach(function(d) {all_together.push(d);});
 var nestedByName = d3.nest().key(function(d) { return d.name }).entries(all_together);
-console.log(nestedByName)
-var y1Min = d3.min(nestedByName, function(d) {        
-  return 10; // set ymin greater than the min to make it grow negatively
-  return Math.min(d.values[0].rank, d.values[1].rank);
-});      
-var y1Max = d3.max(nestedByName, function(d) {        
-  return mymax - 10; // set the max less than the max so it will overgrow
-  //return Math.max(d.values[0].rank, d.values[1].rank);
-});
+for(var i=0;i<nestedByName.length;i++){
+  console.log(nestedByName[i])
+}
 //--------
-    var margin = {top: 70, right: 70, bottom: 40, left: 150};
+    var margin = {top: 0, right: 70, bottom: 0, left: 150};
     var width = parent_width - margin.left - margin.right;
     var	height = 23*this.props.mymax - margin.top - margin.bottom;
     var svg = d3.select(node).append("svg")
@@ -67,7 +61,9 @@ var y1Max = d3.max(nestedByName, function(d) {
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");  
     var config = {yOffset: 30,width: width,height: height,labelGroupOffset: 0,labelKeyOffset: 50,radius: 3,}
 //------- This wont need anymore    
-      var yScale = d3.scaleLinear().range([0,height]).domain([y1Min, y1Max]);
+      var yScale = d3.scaleLinear().range([0,height]).domain([1, mymax]);
+      var var_to_lift_up=yScale(nestedByName[0].values[0].rank)-25;
+      //console.log(yScale(nestedByName[0].values[0].rank))
 //-------- Width and heigh
 
 //------------------------------------------Ractangle that sets the boundary of lines  
@@ -76,21 +72,23 @@ var y1Max = d3.max(nestedByName, function(d) {
       borderLines.append("line").attr("x1", width).attr("y1", 0).attr("x2", width).attr("y2", config.height); // right line starts at x1,x2 at width and goes until height
 //------------------------------------------Group containing the text and slope
     var slopeGroups = svg.append("g").selectAll("g").data(nestedByName).enter().append("g").attr("class", "slope-group")
-    var slopeLines = slopeGroups.append("line").attr("class", "slope-line").attr("x1", 0).attr("y1", function(d) {
-	  return yScale(d.values[0].rank);
+    var slopeLines = slopeGroups.append("line").attr("class", "slope-line")
+    .attr("x1", 0).attr("y1", function(d) {
+    //console.log(yScale(d.values[0].rank))
+	  return yScale(d.values[0].rank)-var_to_lift_up; 
 	  })
 	  .attr("x2", config.width)
 	  .attr("y2", function(d) {
     //return 100;
-	  return yScale(d.values[1].rank);
+	  return yScale(d.values[1].rank)-var_to_lift_up;
 	});
 
 //------------------------------------------Left side
-      var leftSlopeCircle = slopeGroups.append("circle").attr("r", config.radius).attr("cy", d => yScale(d.values[0].rank));
+      var leftSlopeCircle = slopeGroups.append("circle").attr("r", config.radius).attr("cy", d => yScale(d.values[0].rank)-var_to_lift_up);
       var leftSlopeLabels = slopeGroups.append("g").attr("class", "slope-label-left")
       	.each(function(d) {
           d.xLeftPosition = -config.labelGroupOffset;
-          d.yLeftPosition = yScale(d.values[0].rank);
+          d.yLeftPosition = yScale(d.values[0].rank)-var_to_lift_up;
         });
       leftSlopeLabels.append("text")
       	.attr("class", "label-figure")
@@ -112,13 +110,13 @@ var y1Max = d3.max(nestedByName, function(d) {
       var rightSlopeCircle = slopeGroups.append("circle")
       	.attr("r", config.radius)
       	.attr("cx", config.width)
-      	.attr("cy", d => yScale(d.values[1].rank));
+      	.attr("cy", d => yScale(d.values[1].rank)-var_to_lift_up);
       
       var rightSlopeLabels = slopeGroups.append("g")
       	.attr("class", "slope-label-right")
       	.each(function(d) {
           d.xRightPosition = width + config.labelGroupOffset;
-          d.yRightPosition = yScale(d.values[1].rank);
+          d.yRightPosition = yScale(d.values[1].rank)-var_to_lift_up;
         });
       
       rightSlopeLabels.append("text")
@@ -145,14 +143,14 @@ var y1Max = d3.max(nestedByName, function(d) {
       	.attr("text-anchor", "end")
       	.attr("dx", -10)
       	.attr("dy", -margin.top / 2)
-      	.text("Ground Truth");
+      	//.text("Ground Truth");
       
       titles.append("text")
         .attr("text-anchor", "start")
       	.attr("x", config.width)
       	.attr("dx", -50)
       	.attr("dy", -margin.top / 2)
-      	.text(this.props.model_name);
+      	//.text(this.props.model_name);
 //------------------------------------------   
   }  
   render() {

@@ -41,7 +41,7 @@
       stroke-width: 1px;
     }
     .slopechart{
-      border: 1px solid black;
+      
       margin:10px 5px;
       overflow: scroll;
       display: flex; justify-content: center;
