@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/transparency/static/css/main.55110192.chunk.css",
+    "main.js": "/transparency/static/js/main.ae484e2e.chunk.js",
+    "main.js.map": "/transparency/static/js/main.ae484e2e.chunk.js.map",
+    "runtime-main.js": "/transparency/static/js/runtime-main.555891c7.js",
+    "runtime-main.js.map": "/transparency/static/js/runtime-main.555891c7.js.map",
+    "static/css/2.de424728.chunk.css": "/transparency/static/css/2.de424728.chunk.css",
+    "static/js/2.f927b628.chunk.js": "/transparency/static/js/2.f927b628.chunk.js",
+    "static/js/2.f927b628.chunk.js.map": "/transparency/static/js/2.f927b628.chunk.js.map",
+    "index.html": "/transparency/index.html",
+    "precache-manifest.2f970cfdd2426e57c14dfe383aa82bed.js": "/transparency/precache-manifest.2f970cfdd2426e57c14dfe383aa82bed.js",
+    "service-worker.js": "/transparency/service-worker.js",
+    "static/css/2.de424728.chunk.css.map": "/transparency/static/css/2.de424728.chunk.css.map",
+    "static/css/main.55110192.chunk.css.map": "/transparency/static/css/main.55110192.chunk.css.map",
+    "static/js/2.f927b628.chunk.js.LICENSE.txt": "/transparency/static/js/2.f927b628.chunk.js.LICENSE.txt",
+    "static/media/fiscal.csv": "/transparency/static/media/fiscal.af43d75f.csv"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.555891c7.js",
+    "static/css/2.de424728.chunk.css",
+    "static/js/2.f927b628.chunk.js",
+    "static/css/main.55110192.chunk.css",
+    "static/js/main.ae484e2e.chunk.js"
+  ]
+}
